@@ -15,6 +15,7 @@ import math
 import contextlib
 import traceback
 import random
+from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
@@ -261,9 +262,12 @@ def make_figure(results):
     x = np.arange(len(TASKS))
     w = 0.35
 
-    fig = plt.figure(figsize=(14, 9))
+    fig = plt.figure(figsize=(14, 9), constrained_layout=True)
     fig.patch.set_facecolor('#0f1117')
     gs = gridspec.GridSpec(2, 2, figure=fig, hspace=0.48, wspace=0.38)
+    output_dir = Path(__file__).resolve().parent / 'outputs'
+    output_dir.mkdir(exist_ok=True)
+    out = output_dir / 'agent_codegen_results.png'
 
     GRAY  = '#888899'
     GREEN = '#81C784'
@@ -328,11 +332,9 @@ def make_figure(results):
         color='white', fontsize=13, fontweight='bold', y=0.99
     )
 
-    plt.tight_layout()
-    out = '/mnt/user-data/outputs/agent_codegen_results.png'
-    plt.savefig(out, dpi=150, bbox_inches='tight', facecolor='#0f1117')
+    fig.savefig(out, dpi=150, bbox_inches='tight', facecolor='#0f1117')
     plt.close()
-    print(f"Figure saved.")
+    print(f"Figure saved to {out}")
 
 # Main
 
